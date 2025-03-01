@@ -23,7 +23,6 @@ public class FinancialOperations {
 
 		FinancialOperationsService service = context.getBean(FinancialOperationsService.class);
 
-		List<ObjectNode> allTaxes = new ArrayList<>();
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		if (args.length > 0) {
@@ -34,7 +33,7 @@ public class FinancialOperations {
 				while ((line = br.readLine()) != null) {
 					JsonNode operations = objectMapper.readTree(line);
 					List<ObjectNode> taxes = service.processOperations(operations);
-					allTaxes.addAll(taxes);
+					System.out.println(objectMapper.writeValueAsString(taxes));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -46,17 +45,11 @@ public class FinancialOperations {
 				while ((line = br.readLine()) != null) {
 					JsonNode operations = objectMapper.readTree(line);
 					List<ObjectNode> taxes = service.processOperations(operations);
-					allTaxes.addAll(taxes);
+					System.out.println(objectMapper.writeValueAsString(taxes));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
-
-		try {
-			System.out.println(objectMapper.writeValueAsString(allTaxes));
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 
 		context.close();
