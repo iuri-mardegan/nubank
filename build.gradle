@@ -1,6 +1,5 @@
 plugins {
 	id 'java'
-	id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'com'
@@ -32,8 +31,8 @@ jar {
 				'Main-Class': 'com.nubank.FinancialOperations'
 		)
 	}
-}
-
-tasks.withType(com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
-	archiveClassifier.set('')
+	from {
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

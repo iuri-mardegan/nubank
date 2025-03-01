@@ -79,54 +79,12 @@ taxes.add(taxNode);
 
 ## Execução da Aplicação
 
-Para executar a aplicação, você precisa criar um JAR "fat" que inclua todas as dependências. Atualize o arquivo `build.gradle` para usar o plugin `shadow`:
+Para executar a aplicação, você precisa criar um JAR que inclua todas as dependências:
 
-```groovy
-plugins {
-    id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
-}
-
-group = 'com'
-version = '0.0.1-SNAPSHOT'
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
-jar {
-    manifest {
-        attributes(
-            'Main-Class': 'com.nubank.FinancialOperations'
-        )
-    }
-}
-
-tasks.withType(com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
-    archiveClassifier.set('')
-}
-```
-
-Depois de atualizar o `build.gradle`, construa o JAR "fat" com o comando:
+Construa o JAR com o comando:
 
 ```sh
-./gradlew clean shadowJar
+./gradlew clean build
 ```
 
 Para executar a aplicação, use o comando:
