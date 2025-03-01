@@ -30,21 +30,21 @@ public class FinancialOperationsService {
                 double totalValue = unitCost * quantity;
                 double profit = (unitCost - weightedAverage) * quantity;
 
-                if (totalValue > 20000) {
-                    if (profit > 0) {
-                        if (accumulatedLoss > 0) {
-                            if (accumulatedLoss >= profit) {
-                                accumulatedLoss -= profit;
-                                profit = 0;
-                            } else {
-                                profit -= accumulatedLoss;
-                                accumulatedLoss = 0;
-                            }
+                if (profit > 0) {
+                    if (accumulatedLoss > 0) {
+                        if (accumulatedLoss >= profit) {
+                            accumulatedLoss -= profit;
+                            profit = 0;
+                        } else {
+                            profit -= accumulatedLoss;
+                            accumulatedLoss = 0;
                         }
-                        tax = profit * 0.20;
-                    } else {
-                        accumulatedLoss += Math.abs(profit);
                     }
+                    if (totalValue > 20000) {
+                        tax = profit * 0.20;
+                    }
+                } else {
+                    accumulatedLoss += Math.abs(profit);
                 }
                 totalQuantity -= quantity;
             }
