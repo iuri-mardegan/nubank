@@ -1,10 +1,8 @@
-Claro! Aqui está a explicação formatada para um arquivo `readme.md` em português:
-
 # Serviço de Operações Financeiras
 
 ## Visão Geral
 
-A classe `FinancialOperationsService` é um serviço Spring que processa operações financeiras e calcula impostos com base nas operações fornecidas. O principal método de interesse nesta classe é o `processOperations`, que recebe um `JsonNode` contendo uma lista de operações e retorna uma lista de `ObjectNode` representando os impostos calculados para cada operação.
+A classe `FinancialOperationsService` é um serviço que processa operações financeiras e calcula impostos com base nas operações fornecidas. O principal método de interesse nesta classe é o `processOperations`, que recebe um `JsonNode` contendo uma lista de operações e retorna uma lista de `ObjectNode` representando os impostos calculados para cada operação.
 
 ## Explicação do Método
 
@@ -79,9 +77,63 @@ taxNode.put("tax", tax);
 taxes.add(taxNode);
 ```
 
-## Resumo
+## Execução da Aplicação
 
-Este método garante que:
-1. Operações de compra não incorram em impostos.
-2. Perdas sejam acumuladas e deduzidas de lucros futuros.
-3. Impostos sejam aplicados apenas a lucros que excedam as perdas acumuladas e se o valor total da venda exceder 20000.
+Para executar a aplicação, você precisa criar um JAR "fat" que inclua todas as dependências. Atualize o arquivo `build.gradle` para usar o plugin `shadow`:
+
+```groovy
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'com'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'com.nubank.FinancialOperations'
+        )
+    }
+}
+
+tasks.withType(com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
+    archiveClassifier.set('')
+}
+```
+
+Depois de atualizar o `build.gradle`, construa o JAR "fat" com o comando:
+
+```sh
+./gradlew clean shadowJar
+```
+
+Para executar a aplicação, use o comando:
+
+```sh
+java -jar build/libs/nubank-0.0.1-SNAPSHOT.jar < src/test/cenarios/input/caso1.json
+```
+
+Com essas instruções, a aplicação estará pronta para processar operações financeiras e calcular os impostos correspondentes.
+```
