@@ -3,12 +3,10 @@ package com.nubank.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class FinancialOperationsService {
 
     public List<ObjectNode> processOperations(JsonNode operations) {
